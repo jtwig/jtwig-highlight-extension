@@ -1,5 +1,6 @@
 # Jtwig Highlight Extension
 
+Generates pretty HTML for presenting Jtwig
 
 **Build Stats**
 
