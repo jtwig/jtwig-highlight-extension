@@ -23,4 +23,15 @@ public class SpacingParser extends BasicParser {
                 push("")
         );
     }
+
+    public Rule mandatory() {
+        return Sequence(
+                OneOrMore(
+                        AnyOf(
+                                " \n\t"
+                        )
+                ),
+                push(getParserContext().formatter().space(match()))
+        );
+    }
 }

@@ -160,7 +160,7 @@ public class ExpressionParser extends BasicParser {
         );
     }
 
-    Rule Identifier() {
+    public Rule Identifier() {
         IdentifierParser identifierParser = getParserContext().parsers().get(IdentifierParser.class);
         return Sequence(
                 identifierParser.parse(),

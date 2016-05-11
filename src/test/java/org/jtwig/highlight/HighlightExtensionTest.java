@@ -9,7 +9,7 @@ public class HighlightExtensionTest {
     @Test
     public void test() throws Exception {
 
-        String result = JtwigTemplate.inlineTemplate("{% highlight %}{% if (true) %}\n<html />\n{% endif %}{% endhighlight %}",
+        String result = JtwigTemplate.inlineTemplate("{% highlight %}{% for var in test %}blah{% endfor %}{% endhighlight %}",
                 EnvironmentConfigurationBuilder.configuration()
                         .extensions().add(HighlightExtension.defaultHighlight()).and()
                         .build()

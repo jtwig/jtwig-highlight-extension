@@ -25,7 +25,8 @@ public class DefaultHighlightConfiguration extends HighlightConfiguration {
                 new Operator(false, "//"),
                 new Operator(false, "/"),
                 new Operator(false, "~"),
-                new Operator(false, ".")
+                new Operator(false, "."),
+                new Operator(false, "|")
         ));
     }
 }

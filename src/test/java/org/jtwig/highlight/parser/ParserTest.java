@@ -8,15 +8,7 @@ public class ParserTest {
     public void parse() throws Exception {
         HighlightParser highlightParser = HighlightParser.defaultParser();
 
-        String result = highlightParser.parse("{% if (user.loggedIn) %}\n" +
-                "<div class=\"greeting\">\n" +
-                "    Hello <span class=\"usename\">{{ user.greetingName }}</span>!\n" +
-                "</div>\n" +
-                "{% else %}\n" +
-                "<div class=\"login\">\n" +
-                "    Hello there! Try to <a href=\"/login\">Login</a>\n" +
-                "</div>\n" +
-                "{% endif %}");
+        String result = highlightParser.parse("{% for var , test in test %}blah{% endfor %}");
 
         System.out.println(result);
     }

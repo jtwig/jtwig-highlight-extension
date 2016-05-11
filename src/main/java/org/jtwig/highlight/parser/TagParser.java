@@ -15,7 +15,9 @@ public class TagParser extends BasicParser {
                 CommentExpression(),
                 OutputExpression(),
                 TagWithExpression(),
-                TagWithoutExpression()
+                TagWithoutExpression(),
+                ForLoopExpression(),
+                ForLoopKeyExpression()
         );
     }
 
@@ -89,6 +91,57 @@ public class TagParser extends BasicParser {
                 endCodeParser.parse(),
 
                 push(mergeSince(6))
+        );
+    }
+
+    Rule ForLoopExpression () {
+        StartCodeParser startCodeParser = getParserContext().parsers().get(StartCodeParser.class);
+        EndCodeParser endCodeParser = getParserContext().parsers().get(EndCodeParser.class);
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        TagKeywordParser tagKeywordParser = getParserContext().parsers().get(TagKeywordParser.class);
+        ExpressionParser expressionParser = getParserContext().parsers().get(ExpressionParser.class);
+
+        return Sequence(
+                startCodeParser.parse(),
+                spacingParser.parse(),
+                tagKeywordParser.parse(),
+                spacingParser.mandatory(),
+                expressionParser.Identifier(),
+                spacingParser.mandatory(),
+                String("in"), push(getParserContext().formatter().tagKeyword(match())),
+                spacingParser.mandatory(),
+                expressionParser.parse(),
+                spacingParser.parse(),
+                endCodeParser.parse(),
+
+                push(mergeSince(10))
+        );
+    }
+    Rule ForLoopKeyExpression () {
+        StartCodeParser startCodeParser = getParserContext().parsers().get(StartCodeParser.class);
+        EndCodeParser endCodeParser = getParserContext().parsers().get(EndCodeParser.class);
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        TagKeywordParser tagKeywordParser = getParserContext().parsers().get(TagKeywordParser.class);
+        ExpressionParser expressionParser = getParserContext().parsers().get(ExpressionParser.class);
+
+        return Sequence(
+                startCodeParser.parse(),
+                spacingParser.parse(),
+                tagKeywordParser.parse(),
+                spacingParser.mandatory(),
+                expressionParser.Identifier(),
+                spacingParser.parse(),
+                String(","), push(match()),
+                spacingParser.parse(),
+                expressionParser.Identifier(),
+                spacingParser.mandatory(),
+                String("in"), push(getParserContext().formatter().tagKeyword(match())),
+                spacingParser.mandatory(),
+                expressionParser.parse(),
+                spacingParser.parse(),
+                endCodeParser.parse(),
+
+                push(mergeSince(14))
         );
     }
 }
