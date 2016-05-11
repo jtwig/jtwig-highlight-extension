@@ -8,7 +8,7 @@ bintray {
     pkg {
         repo = 'maven'
         userOrg = 'jtwig'
-        name = 'jtwig-web'
+        name = 'jtwig-highlight'
         desc = 'Jtwig : Modern Template Engine for Java'
         websiteUrl = 'http://www.jtwig.org'
         issueTrackerUrl = 'https://github.com/jtwig/jtwig-highlight/issues'
