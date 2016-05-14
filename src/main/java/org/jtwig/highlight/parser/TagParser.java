@@ -14,6 +14,7 @@ public class TagParser extends BasicParser {
     @Label("Tag")
     protected Rule parse() {
         return FirstOf(
+                IncludeExpression(),
                 CommentExpression(),
                 OutputExpression(),
                 TagWithExpression(),
@@ -122,6 +123,70 @@ public class TagParser extends BasicParser {
                 endCodeParser.parse(),
 
                 push(mergeSince(10))
+        );
+    }
+
+    @Label("Include")
+    Rule IncludeExpression () {
+        StartCodeParser startCodeParser = getParserContext().parsers().get(StartCodeParser.class);
+        EndCodeParser endCodeParser = getParserContext().parsers().get(EndCodeParser.class);
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        TagKeywordParser tagKeywordParser = getParserContext().parsers().get(TagKeywordParser.class);
+        ExpressionParser expressionParser = getParserContext().parsers().get(ExpressionParser.class);
+
+        return Sequence(
+                startCodeParser.parse(),
+                spacingParser.parse(),
+                tagKeywordParser.parse(),
+                spacingParser.mandatory(),
+                expressionParser.parse(),
+                spacingParser.parse(),
+                IgnoreMissing(),
+                spacingParser.parse(),
+                With(),
+                spacingParser.parse(),
+                Only(),
+                spacingParser.parse(),
+                endCodeParser.parse(),
+
+                push(mergeSince(12))
+        );
+    }
+
+    Rule Only() {
+        TagKeywordParser tagKeywordParser = getParserContext().parsers().get(TagKeywordParser.class);
+        return FirstOf(
+                tagKeywordParser.parse(),
+                push("")
+        );
+    }
+
+    Rule With() {
+        TagKeywordParser tagKeywordParser = getParserContext().parsers().get(TagKeywordParser.class);
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        ExpressionParser expressionParser = getParserContext().parsers().get(ExpressionParser.class);
+        return FirstOf(
+                Sequence(
+                        tagKeywordParser.parse(),
+                        spacingParser.parse(),
+                        expressionParser.parse(),
+
+                        push(mergeSince(2))
+                ),
+                push("")
+        );
+    }
+
+    Rule IgnoreMissing() {
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+
+        return FirstOf(
+                Sequence(
+                        String("ignore"), push(getParserContext().formatter().tagKeyword(match())),
+                        spacingParser.mandatory(),
+                        String("missing"), push(getParserContext().formatter().tagKeyword(match()))
+                ),
+                push("")
         );
     }
 

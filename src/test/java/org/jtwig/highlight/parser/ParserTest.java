@@ -75,4 +75,13 @@ public class ParserTest {
 
         System.out.println(result);
     }
+
+    @Test
+    public void include() throws Exception {
+        HighlightParser highlightParser = HighlightParser.tracingParser();
+
+        String result = highlightParser.parse("{% include 'template.twig' ignore missing with {} only %}");
+
+        System.out.println(result);
+    }
 }
