@@ -149,7 +149,7 @@ public class TagParser extends BasicParser {
                 spacingParser.parse(),
                 endCodeParser.parse(),
 
-                push(mergeSince(14))
+                push(mergeSince(12))
         );
     }
 
@@ -184,7 +184,9 @@ public class TagParser extends BasicParser {
                 Sequence(
                         String("ignore"), push(getParserContext().formatter().tagKeyword(match())),
                         spacingParser.mandatory(),
-                        String("missing"), push(getParserContext().formatter().tagKeyword(match()))
+                        String("missing"), push(getParserContext().formatter().tagKeyword(match())),
+
+                        push(mergeSince(2))
                 ),
                 push("")
         );

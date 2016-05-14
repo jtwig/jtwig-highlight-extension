@@ -84,7 +84,7 @@ public class ParserTest {
     }
 
     @Test
-    public void include() throws Exception {
+    public void parseInclude() throws Exception {
         HighlightParser highlightParser = echoParser();
 
         String result = highlightParser.parse("{% include 'template.twig' ignore missing with {} only %}");
