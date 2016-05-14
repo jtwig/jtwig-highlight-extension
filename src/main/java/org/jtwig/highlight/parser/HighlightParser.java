@@ -30,7 +30,7 @@ public class HighlightParser {
 
     public String parse (String content) {
         ParseRunner<String> runner = factory.create(parserContext);
-        ParsingResult<String> result = runner.run(content);
+        ParsingResult<String> result = runner.run(content.trim());
         return result.resultValue;
     }
 }
