@@ -48,4 +48,31 @@ public class ParserTest {
 
         System.out.println(result);
     }
+
+    @Test
+    public void parseList() throws Exception {
+        HighlightParser highlightParser = HighlightParser.tracingParser();
+
+        String result = highlightParser.parse("{{ [1, 2, 3] }}");
+
+        System.out.println(result);
+    }
+
+    @Test
+    public void parseMap() throws Exception {
+        HighlightParser highlightParser = HighlightParser.tracingParser();
+
+        String result = highlightParser.parse("{{ {hello: 'one'} }}");
+
+        System.out.println(result);
+    }
+
+    @Test
+    public void parseMapString() throws Exception {
+        HighlightParser highlightParser = HighlightParser.tracingParser();
+
+        String result = highlightParser.parse("{{ {hello: 'one', 'two':'three'} }}");
+
+        System.out.println(result);
+    }
 }

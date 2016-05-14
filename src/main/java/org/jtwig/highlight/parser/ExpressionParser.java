@@ -81,18 +81,25 @@ public class ExpressionParser extends BasicParser {
     Rule Operator(Operator operator) {
         if (operator.isIdentifierPattern()) {
             return Sequence(
-                    String(operator.getSymbol()),
+                    operatorSymbol(operator),
                     Test(AnyOf(" \n\t"))
             );
         } else {
-            return String(operator.getSymbol());
+            return operatorSymbol(operator);
         }
+    }
+
+    @Label("Operator Symbol")
+    Rule operatorSymbol(Operator operator) {
+        return String(operator.getSymbol());
     }
 
     @Label("Primary")
     Rule Primary() {
         return FirstOf(
                 Literals(),
+                List(),
+                Map(),
                 MethodCall(),
                 Identifier(),
                 ParentsisExpression()
@@ -105,6 +112,73 @@ public class ExpressionParser extends BasicParser {
                 StringExpression(),
                 NumberExpression(),
                 BooleanExpression()
+        );
+    }
+
+    @Label("List")
+    Rule List() {
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        return Sequence(
+                String("["), push(getParserContext().formatter().startList()),
+                spacingParser.parse(),
+                Arguments(),
+                spacingParser.parse(),
+                String("]"), push(getParserContext().formatter().endList()),
+
+                push(mergeSince(4))
+        );
+    }
+
+    @Label("Map")
+    Rule Map() {
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        return Sequence(
+                String("{"), push(getParserContext().formatter().startMap()),
+                spacingParser.parse(),
+                MapDefinitions(),
+                spacingParser.parse(),
+                String("}"), push(getParserContext().formatter().endMap()),
+
+                push(mergeSince(4))
+        );
+    }
+
+    @Label("Map definitions")
+    Rule MapDefinitions() {
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        return FirstOf(
+                Sequence(
+                        FirstOf(
+                                StringExpression(),
+                                Identifier()
+                        ),
+                        spacingParser.parse(),
+                        String(":"), push(getParserContext().formatter().operator(":")),
+                        spacingParser.parse(),
+                        parse(),
+                        spacingParser.parse(),
+                        FirstOf(
+                                OneOrMore(
+                                        Sequence(
+                                                String(","), push(getParserContext().formatter().operator(",")),
+                                                spacingParser.parse(),
+                                                FirstOf(
+                                                        StringExpression(),
+                                                        Identifier()
+                                                ),
+                                                spacingParser.parse(),
+                                                String(":"), push(getParserContext().formatter().operator(":")),
+                                                spacingParser.parse(),
+                                                parse(),
+                                                spacingParser.parse(),
+                                                push(mergeSince(7))
+                                        )
+                                ),
+                                spacingParser.parse()
+                        ),
+                        push(mergeSince(6))
+                ),
+                spacingParser.parse()
         );
     }
 
@@ -125,7 +199,8 @@ public class ExpressionParser extends BasicParser {
                 Sequence(
                         Optional(
                                 ZeroOrMore(CharRange('0', '9')),
-                                String(".")
+                                String("."),
+                                Test(CharRange('0', '9'))
                         ),
                         OneOrMore(CharRange('0', '9'))
                 ),
@@ -215,7 +290,7 @@ public class ExpressionParser extends BasicParser {
                                                 push(mergeSince(3))
                                         )
                                 ),
-                                push("")
+                                spacingParser.parse()
                         ),
                         push(mergeSince(2))
                 ),

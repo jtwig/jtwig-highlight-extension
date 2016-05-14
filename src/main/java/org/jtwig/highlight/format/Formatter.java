@@ -26,4 +26,10 @@ public interface Formatter {
     String booleanLiteral(String match);
 
     String content(String match);
+
+    String startList();
+    String endList();
+
+    String startMap();
+    String endMap();
 }

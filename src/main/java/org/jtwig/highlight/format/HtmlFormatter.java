@@ -94,4 +94,24 @@ public class HtmlFormatter implements Formatter {
     public String content(String match) {
         return String.format("<span class=\"%s-content\">%s</span>", classPrefix, space(StringEscapeUtils.escapeHtml4(match)));
     }
+
+    @Override
+    public String startList() {
+        return "[";
+    }
+
+    @Override
+    public String endList() {
+        return "]";
+    }
+
+    @Override
+    public String startMap() {
+        return "{";
+    }
+
+    @Override
+    public String endMap() {
+        return "}";
+    }
 }
