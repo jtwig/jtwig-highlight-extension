@@ -1,6 +1,13 @@
 package org.jtwig.highlight.parser;
 
+import org.jtwig.highlight.format.EchoFormatter;
+import org.jtwig.highlight.parser.context.ParserContextFactory;
+import org.jtwig.highlight.parser.factory.TracingParserRunnerFactory;
 import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.jtwig.highlight.config.HighlightConfigurationBuilder.highlightConfiguration;
 
 public class ParserTest {
 
@@ -78,10 +85,17 @@ public class ParserTest {
 
     @Test
     public void include() throws Exception {
-        HighlightParser highlightParser = HighlightParser.tracingParser();
+        HighlightParser highlightParser = echoParser();
 
         String result = highlightParser.parse("{% include 'template.twig' ignore missing with {} only %}");
 
-        System.out.println(result);
+        assertThat(result, is("{% include 'template.twig' ignore missing with {} only %}"));
+    }
+
+    private HighlightParser echoParser() {
+        return new HighlightParser(new ParserContextFactory().create(highlightConfiguration()
+                .withFormatter(new EchoFormatter())
+                .build()),
+                new TracingParserRunnerFactory());
     }
 }

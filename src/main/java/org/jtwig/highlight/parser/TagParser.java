@@ -149,7 +149,7 @@ public class TagParser extends BasicParser {
                 spacingParser.parse(),
                 endCodeParser.parse(),
 
-                push(mergeSince(12))
+                push(mergeSince(14))
         );
     }
 
