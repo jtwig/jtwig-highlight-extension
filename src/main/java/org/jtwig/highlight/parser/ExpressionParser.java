@@ -5,6 +5,7 @@ import org.jtwig.highlight.parser.base.BasicParser;
 import org.jtwig.highlight.parser.context.ParserContext;
 import org.jtwig.highlight.parser.operators.Operator;
 import org.parboiled.Rule;
+import org.parboiled.annotations.Label;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class ExpressionParser extends BasicParser {
     }
 
     @Override
+    @Label("Expression")
     protected Rule parse() {
         return FirstOf(
                 Ternary(),
@@ -23,6 +25,7 @@ public class ExpressionParser extends BasicParser {
         );
     }
 
+    @Label("Ternary")
     Rule Ternary() {
         SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
         return Sequence(
@@ -39,6 +42,7 @@ public class ExpressionParser extends BasicParser {
         );
     }
 
+    @Label("Binary")
     Rule Binary() {
         SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
         return Sequence(
@@ -51,6 +55,7 @@ public class ExpressionParser extends BasicParser {
         );
     }
 
+    @Label("Unary")
     Rule Unary() {
         SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
 
@@ -84,6 +89,7 @@ public class ExpressionParser extends BasicParser {
         }
     }
 
+    @Label("Primary")
     Rule Primary() {
         return FirstOf(
                 Literals(),
@@ -92,6 +98,7 @@ public class ExpressionParser extends BasicParser {
         );
     }
 
+    @Label("Literals")
     Rule Literals() {
         return FirstOf(
                 StringExpression(),
@@ -100,6 +107,7 @@ public class ExpressionParser extends BasicParser {
         );
     }
 
+    @Label("Boolean")
     Rule BooleanExpression() {
         return Sequence(
                 FirstOf(
@@ -110,6 +118,7 @@ public class ExpressionParser extends BasicParser {
         );
     }
 
+    @Label("Number")
     Rule NumberExpression() {
         return Sequence(
                 Sequence(
@@ -123,6 +132,7 @@ public class ExpressionParser extends BasicParser {
         );
     }
 
+    @Label("String")
     Rule StringExpression() {
         return Sequence(
                 FirstOf(
@@ -146,6 +156,7 @@ public class ExpressionParser extends BasicParser {
         );
     }
 
+    @Label("Parentsis")
     Rule ParentsisExpression() {
         SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
         Formatter formatter = getParserContext().formatter();
@@ -160,6 +171,7 @@ public class ExpressionParser extends BasicParser {
         );
     }
 
+    @Label("Identifier")
     public Rule Identifier() {
         IdentifierParser identifierParser = getParserContext().parsers().get(IdentifierParser.class);
         return Sequence(

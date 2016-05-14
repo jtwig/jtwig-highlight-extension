@@ -3,6 +3,7 @@ package org.jtwig.highlight.parser;
 import org.jtwig.highlight.parser.base.BasicParser;
 import org.jtwig.highlight.parser.context.ParserContext;
 import org.parboiled.Rule;
+import org.parboiled.annotations.Label;
 
 public class TagParser extends BasicParser {
     public TagParser(ParserContext parserContext) {
@@ -10,6 +11,7 @@ public class TagParser extends BasicParser {
     }
 
     @Override
+    @Label("Tag")
     protected Rule parse() {
         return FirstOf(
                 CommentExpression(),
@@ -17,10 +19,12 @@ public class TagParser extends BasicParser {
                 TagWithExpression(),
                 TagWithoutExpression(),
                 ForLoopExpression(),
-                ForLoopKeyExpression()
+                ForLoopKeyExpression(),
+                setExpression()
         );
     }
 
+    @Label("Comment")
     Rule CommentExpression() {
         StartCommentParser startCodeParser = getParserContext().parsers().get(StartCommentParser.class);
         EndCommentParser endCodeParser = getParserContext().parsers().get(EndCommentParser.class);
@@ -40,6 +44,7 @@ public class TagParser extends BasicParser {
         );
     }
 
+    @Label("Output")
     Rule OutputExpression() {
         StartOutputParser startCodeParser = getParserContext().parsers().get(StartOutputParser.class);
         EndOutputParser endCodeParser = getParserContext().parsers().get(EndOutputParser.class);
@@ -57,6 +62,7 @@ public class TagParser extends BasicParser {
         );
     }
 
+    @Label("Tag without Expression")
     Rule TagWithoutExpression() {
         StartCodeParser startCodeParser = getParserContext().parsers().get(StartCodeParser.class);
         EndCodeParser endCodeParser = getParserContext().parsers().get(EndCodeParser.class);
@@ -74,6 +80,7 @@ public class TagParser extends BasicParser {
         );
     }
 
+    @Label("Tag with Expression")
     Rule TagWithExpression() {
         StartCodeParser startCodeParser = getParserContext().parsers().get(StartCodeParser.class);
         EndCodeParser endCodeParser = getParserContext().parsers().get(EndCodeParser.class);
@@ -94,6 +101,31 @@ public class TagParser extends BasicParser {
         );
     }
 
+    @Label("Set")
+    Rule setExpression () {
+        StartCodeParser startCodeParser = getParserContext().parsers().get(StartCodeParser.class);
+        EndCodeParser endCodeParser = getParserContext().parsers().get(EndCodeParser.class);
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        ExpressionParser expressionParser = getParserContext().parsers().get(ExpressionParser.class);
+
+        return Sequence(
+                startCodeParser.parse(),
+                spacingParser.parse(),
+                String("set"), push(getParserContext().formatter().tagKeyword("set")),
+                spacingParser.parse(),
+                expressionParser.Identifier(),
+                spacingParser.parse(),
+                String("="), push(getParserContext().formatter().operator("=")),
+                spacingParser.parse(),
+                expressionParser.parse(),
+                spacingParser.parse(),
+                endCodeParser.parse(),
+
+                push(mergeSince(10))
+        );
+    }
+
+    @Label("For loop list")
     Rule ForLoopExpression () {
         StartCodeParser startCodeParser = getParserContext().parsers().get(StartCodeParser.class);
         EndCodeParser endCodeParser = getParserContext().parsers().get(EndCodeParser.class);
@@ -117,6 +149,8 @@ public class TagParser extends BasicParser {
                 push(mergeSince(10))
         );
     }
+
+    @Label("For loop map")
     Rule ForLoopKeyExpression () {
         StartCodeParser startCodeParser = getParserContext().parsers().get(StartCodeParser.class);
         EndCodeParser endCodeParser = getParserContext().parsers().get(EndCodeParser.class);

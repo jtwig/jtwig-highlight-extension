@@ -18,12 +18,12 @@ public class DefaultHighlightConfiguration extends HighlightConfiguration {
                 new Operator(true, "and"),
                 new Operator(true, "or"),
                 new Operator(false, "=="),
-                new Operator(false, "="),
                 new Operator(false, "-"),
                 new Operator(false, "**"),
                 new Operator(false, "*"),
                 new Operator(false, "//"),
                 new Operator(false, "/"),
+                new Operator(false, "+"),
                 new Operator(false, "~"),
                 new Operator(false, "."),
                 new Operator(false, "|")

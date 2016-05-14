@@ -18,7 +18,7 @@ public class IdentifierParser extends BasicParser {
                         CharRange('a', 'z'),
                         String('_')
                 ),
-                OneOrMore(
+                ZeroOrMore(
                         FirstOf(
                                 CharRange('A', 'Z'),
                                 CharRange('a', 'z'),

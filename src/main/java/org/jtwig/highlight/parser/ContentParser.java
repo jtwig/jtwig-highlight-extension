@@ -3,6 +3,7 @@ package org.jtwig.highlight.parser;
 import org.jtwig.highlight.parser.base.BasicParser;
 import org.jtwig.highlight.parser.context.ParserContext;
 import org.parboiled.Rule;
+import org.parboiled.annotations.Label;
 
 public class ContentParser extends BasicParser {
     public ContentParser(ParserContext context) {
@@ -10,6 +11,7 @@ public class ContentParser extends BasicParser {
     }
 
     @Override
+    @Label("Content")
     protected Rule parse() {
         StartCommentParser startCommentParser = getParserContext().parsers().get(StartCommentParser.class);
         StartOutputParser startOutputParser = getParserContext().parsers().get(StartOutputParser.class);
