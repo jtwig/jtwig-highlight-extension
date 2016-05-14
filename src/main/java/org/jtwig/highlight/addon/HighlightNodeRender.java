@@ -14,7 +14,7 @@ public class HighlightNodeRender implements NodeRender<HighlightNode> {
     @Override
     public Renderable render(RenderRequest renderRequest, HighlightNode node) {
         HighlightConfiguration configuration = HighlightExtension.configuration(renderRequest.getEnvironment());
-        HighlightParser highlightParser = new HighlightParser(new ParserContextFactory().create(configuration));
+        HighlightParser highlightParser = new HighlightParser(new ParserContextFactory().create(configuration), configuration.getFactory());
         return new StringRenderable(highlightParser.parse(node.getContent()), NoneEscapeEngine.instance());
     }
 }

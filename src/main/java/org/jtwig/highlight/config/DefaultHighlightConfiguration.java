@@ -1,6 +1,7 @@
 package org.jtwig.highlight.config;
 
 import org.jtwig.highlight.format.HtmlFormatter;
+import org.jtwig.highlight.parser.factory.BasicParserRunnerFactory;
 import org.jtwig.highlight.parser.operators.Operator;
 
 import static java.util.Arrays.asList;
@@ -27,6 +28,6 @@ public class DefaultHighlightConfiguration extends HighlightConfiguration {
                 new Operator(false, "~"),
                 new Operator(false, "."),
                 new Operator(false, "|")
-        ));
+        ), new BasicParserRunnerFactory());
     }
 }

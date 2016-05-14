@@ -3,6 +3,7 @@ package org.jtwig.highlight.parser;
 import org.jtwig.highlight.parser.base.BasicParser;
 import org.jtwig.highlight.parser.context.ParserContext;
 import org.parboiled.Rule;
+import org.parboiled.annotations.Label;
 
 public class TagKeywordParser extends BasicParser {
     public TagKeywordParser(ParserContext context) {
@@ -10,6 +11,7 @@ public class TagKeywordParser extends BasicParser {
     }
 
     @Override
+    @Label("Keyword")
     public Rule parse() {
         IdentifierParser identifierParser = getParserContext().parsers().get(IdentifierParser.class);
         return Sequence(

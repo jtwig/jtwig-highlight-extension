@@ -93,6 +93,7 @@ public class ExpressionParser extends BasicParser {
     Rule Primary() {
         return FirstOf(
                 Literals(),
+                MethodCall(),
                 Identifier(),
                 ParentsisExpression()
         );
@@ -161,12 +162,10 @@ public class ExpressionParser extends BasicParser {
         SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
         Formatter formatter = getParserContext().formatter();
         return Sequence(
-                String("("),
-                push(formatter.startParentsis()),
+                String("("), push(formatter.startParentsis()),
                 spacingParser.parse(),
                 parse(),
-                String(")"),
-                push(formatter.endParentsis()),
+                String(")"), push(formatter.endParentsis()),
                 push(mergeSince(3))
         );
     }
@@ -177,6 +176,50 @@ public class ExpressionParser extends BasicParser {
         return Sequence(
                 identifierParser.parse(),
                 push(getParserContext().formatter().variable(match()))
+        );
+    }
+
+    @Label("MethodCall")
+    public Rule MethodCall() {
+        Formatter formatter = getParserContext().formatter();
+        IdentifierParser identifierParser = getParserContext().parsers().get(IdentifierParser.class);
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        return Sequence(
+                identifierParser.parse(), push(getParserContext().formatter().variable(match())),
+                spacingParser.parse(),
+                String("("), push(formatter.startParentsis()),
+                spacingParser.parse(),
+                Arguments(),
+                spacingParser.parse(),
+                String(")"), push(formatter.endParentsis()),
+                spacingParser.parse(),
+
+                push(mergeSince(7))
+        );
+    }
+
+    @Label("Arguments")
+    Rule Arguments() {
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        return FirstOf(
+                Sequence(
+                        parse(),
+                        spacingParser.parse(),
+                        FirstOf(
+                                OneOrMore(
+                                        Sequence(
+                                                String(","), push(getParserContext().formatter().operator(",")),
+                                                spacingParser.parse(),
+                                                parse(),
+                                                spacingParser.parse(),
+                                                push(mergeSince(3))
+                                        )
+                                ),
+                                push("")
+                        ),
+                        push(mergeSince(2))
+                ),
+                spacingParser.parse()
         );
     }
 }

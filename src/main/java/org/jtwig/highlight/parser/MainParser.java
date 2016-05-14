@@ -10,7 +10,7 @@ public class MainParser extends BasicParser {
     }
 
     @Override
-    protected Rule parse() {
+    public Rule parse() {
         TagParser tagParser = getParserContext().parsers().get(TagParser.class);
         ContentParser contentParser = getParserContext().parsers().get(ContentParser.class);
 

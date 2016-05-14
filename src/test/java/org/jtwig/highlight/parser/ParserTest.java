@@ -21,4 +21,31 @@ public class ParserTest {
 
         System.out.println(result);
     }
+
+    @Test
+    public void parseMethodCalls() throws Exception {
+        HighlightParser highlightParser = HighlightParser.defaultParser();
+
+        String result = highlightParser.parse("{% do test.method() %}");
+
+        System.out.println(result);
+    }
+
+    @Test
+    public void parseMethodCallsWithArguments() throws Exception {
+        HighlightParser highlightParser = HighlightParser.tracingParser();
+
+        String result = highlightParser.parse("{% do test.method('hello') %}");
+
+        System.out.println(result);
+    }
+
+    @Test
+    public void parseMethodCallsWithMultipleArguments() throws Exception {
+        HighlightParser highlightParser = HighlightParser.tracingParser();
+
+        String result = highlightParser.parse("{% do test.method('hello', 1) %}");
+
+        System.out.println(result);
+    }
 }
