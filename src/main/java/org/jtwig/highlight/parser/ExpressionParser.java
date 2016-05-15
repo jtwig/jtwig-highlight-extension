@@ -148,35 +148,40 @@ public class ExpressionParser extends BasicParser {
         SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
         return FirstOf(
                 Sequence(
-                        FirstOf(
-                                StringExpression(),
-                                Identifier()
+                        Sequence(
+                                FirstOf(
+                                        StringExpression(),
+                                        Identifier()
+                                ),
+                                spacingParser.parse(),
+                                String(":"), push(getParserContext().formatter().operator(":")),
+                                spacingParser.parse(),
+                                parse(),
+                                spacingParser.parse(),
+
+                                push(mergeSince(5))
                         ),
-                        spacingParser.parse(),
-                        String(":"), push(getParserContext().formatter().operator(":")),
-                        spacingParser.parse(),
-                        parse(),
-                        spacingParser.parse(),
                         FirstOf(
                                 OneOrMore(
                                         Sequence(
-                                                String(","), push(getParserContext().formatter().operator(",")),
-                                                spacingParser.parse(),
-                                                FirstOf(
-                                                        StringExpression(),
-                                                        Identifier()
+                                                Sequence(
+                                                        String(","), push(getParserContext().formatter().operator(",")),
+                                                        spacingParser.parse(),
+                                                        FirstOf(
+                                                                StringExpression(),
+                                                                Identifier()
+                                                        ),
+                                                        spacingParser.parse(),
+                                                        String(":"), push(getParserContext().formatter().operator(":")),
+                                                        spacingParser.parse(),
+                                                        parse(),
+                                                        spacingParser.parse()
                                                 ),
-                                                spacingParser.parse(),
-                                                String(":"), push(getParserContext().formatter().operator(":")),
-                                                spacingParser.parse(),
-                                                parse(),
-                                                spacingParser.parse(),
-                                                push(mergeSince(7))
+                                                push(mergeSince(8))
                                         )
                                 ),
-                                spacingParser.parse()
-                        ),
-                        push(mergeSince(6))
+                                push(pop())
+                        )
                 ),
                 spacingParser.parse()
         );
@@ -267,9 +272,8 @@ public class ExpressionParser extends BasicParser {
                 Arguments(),
                 spacingParser.parse(),
                 String(")"), push(formatter.endParentsis()),
-                spacingParser.parse(),
 
-                push(mergeSince(7))
+                push(mergeSince(6))
         );
     }
 
@@ -279,22 +283,21 @@ public class ExpressionParser extends BasicParser {
         return FirstOf(
                 Sequence(
                         parse(),
-                        spacingParser.parse(),
                         FirstOf(
                                 OneOrMore(
                                         Sequence(
+                                                spacingParser.parse(),
                                                 String(","), push(getParserContext().formatter().operator(",")),
                                                 spacingParser.parse(),
                                                 parse(),
-                                                spacingParser.parse(),
-                                                push(mergeSince(3))
+
+                                                push(mergeSince(4))
                                         )
                                 ),
-                                spacingParser.parse()
-                        ),
-                        push(mergeSince(2))
+                                push(mergeSince(0))
+                        )
                 ),
-                spacingParser.parse()
+                push("")
         );
     }
 }

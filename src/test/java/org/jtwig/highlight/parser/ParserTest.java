@@ -84,12 +84,30 @@ public class ParserTest {
     }
 
     @Test
+    public void parseMapStringMultiple() throws Exception {
+        HighlightParser highlightParser = echoParser();
+
+        String result = highlightParser.parse("{{ {hello: 'one', 'two':'three', 'nana':eheh} }}");
+
+        assertThat(result, is("{{ {hello: 'one', 'two':'three', 'nana':eheh} }}"));
+    }
+
+    @Test
     public void parseInclude() throws Exception {
         HighlightParser highlightParser = echoParser();
 
         String result = highlightParser.parse("{% include 'template.twig' ignore missing with {} only %}");
 
         assertThat(result, is("{% include 'template.twig' ignore missing with {} only %}"));
+    }
+
+    @Test
+    public void parseMacro() throws Exception {
+        HighlightParser highlightParser = echoParser();
+
+        String result = highlightParser.parse("{% macro macroName (firstArgument, secondArgument, nArgument) %}");
+
+        assertThat(result, is("{% macro macroName (firstArgument, secondArgument, nArgument) %}"));
     }
 
     private HighlightParser echoParser() {
