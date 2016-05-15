@@ -21,7 +21,24 @@ public class ExpressionParser extends BasicParser {
                 Ternary(),
                 Binary(),
                 Unary(),
+                AccessExpression(),
                 Primary()
+        );
+    }
+
+    @Label("Access")
+    Rule AccessExpression() {
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        return Sequence(
+                Primary(),
+                spacingParser.parse(),
+                String("["), push(getParserContext().formatter().operator(match())),
+                spacingParser.parse(),
+                parse(),
+                spacingParser.parse(),
+                String("]"), push(getParserContext().formatter().operator(match())),
+
+                push(mergeSince(6))
         );
     }
 

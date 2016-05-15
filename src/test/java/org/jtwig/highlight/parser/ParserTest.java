@@ -110,6 +110,15 @@ public class ParserTest {
         assertThat(result, is("{% macro macroName (firstArgument, secondArgument, nArgument) %}"));
     }
 
+    @Test
+    public void parseAccressExpression() throws Exception {
+        HighlightParser highlightParser = echoParser();
+
+        String result = highlightParser.parse("{% if (defined([1, 2][5])) %}KO{% else %}OK{% endif %}");
+
+        assertThat(result, is("{% if (defined([1, 2][5])) %}KO{% else %}OK{% endif %}"));
+    }
+
     private HighlightParser echoParser() {
         return new HighlightParser(new ParserContextFactory().create(highlightConfiguration()
                 .withFormatter(new EchoFormatter())
