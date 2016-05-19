@@ -134,7 +134,7 @@ public class ParserTest {
 
         String result = highlightParser.parse("{% trans into 'pt' with {} %}Hello world{% endtrans %}");
 
-        assertThat(result, is("{% trans into 'pt' %}Hello world{% endtrans %}"));
+        assertThat(result, is("{% trans into 'pt' with {} %}Hello world{% endtrans %}"));
     }
 
     private HighlightParser echoParser() {
