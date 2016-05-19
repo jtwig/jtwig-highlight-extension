@@ -119,6 +119,24 @@ public class ParserTest {
         assertThat(result, is("{% if (defined([1, 2][5])) %}KO{% else %}OK{% endif %}"));
     }
 
+    @Test
+    public void parseTranslate() throws Exception {
+        HighlightParser highlightParser = echoParser();
+
+        String result = highlightParser.parse("{% trans into 'pt' %}Hello world{% endtrans %}");
+
+        assertThat(result, is("{% trans into 'pt' %}Hello world{% endtrans %}"));
+    }
+
+    @Test
+    public void parseTranslateWith() throws Exception {
+        HighlightParser highlightParser = echoParser();
+
+        String result = highlightParser.parse("{% trans into 'pt' with {} %}Hello world{% endtrans %}");
+
+        assertThat(result, is("{% trans into 'pt' %}Hello world{% endtrans %}"));
+    }
+
     private HighlightParser echoParser() {
         return new HighlightParser(new ParserContextFactory().create(highlightConfiguration()
                 .withFormatter(new EchoFormatter())

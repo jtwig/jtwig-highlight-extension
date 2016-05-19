@@ -17,6 +17,8 @@ public class TagParser extends BasicParser {
                 IncludeExpression(),
                 CommentExpression(),
                 OutputExpression(),
+                DoubleTagWithExpressionPlusTagWithExpression(),
+                DoubleTagWithExpression(),
                 TagWithExpression(),
                 TagWithoutExpression(),
                 ForLoopExpression(),
@@ -99,6 +101,55 @@ public class TagParser extends BasicParser {
                 endCodeParser.parse(),
 
                 push(mergeSince(6))
+        );
+    }
+
+    @Label("Double tag with Expression")
+    Rule DoubleTagWithExpression() {
+        StartCodeParser startCodeParser = getParserContext().parsers().get(StartCodeParser.class);
+        EndCodeParser endCodeParser = getParserContext().parsers().get(EndCodeParser.class);
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        TagKeywordParser tagKeywordParser = getParserContext().parsers().get(TagKeywordParser.class);
+        ExpressionParser expressionParser = getParserContext().parsers().get(ExpressionParser.class);
+
+        return Sequence(
+                startCodeParser.parse(),
+                spacingParser.parse(),
+                tagKeywordParser.parse(),
+                spacingParser.parse(),
+                tagKeywordParser.parse(),
+                spacingParser.parse(),
+                expressionParser.parse(),
+                spacingParser.parse(),
+                endCodeParser.parse(),
+
+                push(mergeSince(8))
+        );
+    }
+    @Label("Double tag with Expression plus tag with expression")
+    Rule DoubleTagWithExpressionPlusTagWithExpression() {
+        StartCodeParser startCodeParser = getParserContext().parsers().get(StartCodeParser.class);
+        EndCodeParser endCodeParser = getParserContext().parsers().get(EndCodeParser.class);
+        SpacingParser spacingParser = getParserContext().parsers().get(SpacingParser.class);
+        TagKeywordParser tagKeywordParser = getParserContext().parsers().get(TagKeywordParser.class);
+        ExpressionParser expressionParser = getParserContext().parsers().get(ExpressionParser.class);
+
+        return Sequence(
+                startCodeParser.parse(),
+                spacingParser.parse(),
+                tagKeywordParser.parse(),
+                spacingParser.parse(),
+                tagKeywordParser.parse(),
+                spacingParser.parse(),
+                expressionParser.parse(),
+                spacingParser.parse(),
+                tagKeywordParser.parse(),
+                spacingParser.parse(),
+                expressionParser.parse(),
+                spacingParser.parse(),
+                endCodeParser.parse(),
+
+                push(mergeSince(12))
         );
     }
 
