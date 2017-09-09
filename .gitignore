@@ -4,16 +4,12 @@
 
 # Gradle
 .gradle
-gradlew
-gradlew.bat
-gradle/wrapper
 build/
 
 # Compiled files
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -22,3 +18,4 @@ hs_err_pid*
 
 # Maven
 pom.xml
+target/
