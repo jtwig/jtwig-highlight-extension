@@ -5,7 +5,7 @@ Generates pretty HTML for presenting Jtwig
 **Build Stats**
 
 [![Build Status](https://travis-ci.org/jtwig/jtwig-highlight-extension.svg?branch=master)](https://travis-ci.org/jtwig/jtwig-highlight-extension)
-[![Coverage Status](https://coveralls.io/repos/github/jtwig/jtwig-highlight-extension/badge.svg?branch=master)](https://coveralls.io/github/jtwig/jtwig-highlight-extension?branch=master)
+[![codecov](https://codecov.io/gh/jtwig/jtwig-highlight-extension/branch/master/graph/badge.svg)](https://codecov.io/gh/jtwig/jtwig-highlight-extension)
 [![Download](https://api.bintray.com/packages/jtwig/maven/jtwig-highlight-extension/images/download.svg) ](https://bintray.com/jtwig/maven/jtwig-highlight-extension/_latestVersion)
 
 **Licensing**
